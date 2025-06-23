@@ -6,11 +6,9 @@ import { Button } from "./ui/button";
 
 import { cn, getRandomInterviewCover } from "@/lib/utils";
 import DisplayTechIcons from "./DisplayTechIcons";
-// import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
 
 const InterviewCard = ({
   interviewId,
-  //   userId,
   role,
   type,
   techstack,
