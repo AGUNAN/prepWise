@@ -3,7 +3,7 @@
 // import { generateObject } from "ai";
 // import { google } from "@ai-sdk/google";
 
-// import { db } from "@/firebase/admin";
+import { db } from "@/firebase/admin";
 // import { feedbackSchema } from "@/constants";
 
 // export async function createFeedback(params: CreateFeedbackParams) {
@@ -123,3 +123,59 @@
 //     ...doc.data(),
 //   })) as Interview[];
 // }
+export async function getInterviewsByUserId(
+  userId: string
+): Promise<Interview[] | null> {
+  try {
+    const interviews = await db
+      .collection("interviews")
+      .where("userId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .get();
+
+    if (interviews.empty) return null;
+
+    return interviews.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+  } catch (error) {
+    console.error("Error fetching interviews:", error);
+    return null;
+  }
+}
+
+export async function getLatestInterviews(
+  params: GetLatestInterviewsParams
+): Promise<Interview[] | null> {
+  const { userId, limit = 20 } = params;
+
+  try {
+    const interviews = await db
+      .collection("interviews")
+      .orderBy("createdAt", "desc")
+      .where("finalized", "==", true)
+      .where("userId", "!=", userId)
+      .limit(limit)
+      .get();
+
+    if (interviews.empty) {
+      return null;
+    }
+
+    return interviews.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Interview[];
+    
+  } catch (error) {
+    console.error("Error fetching latest interviews:", error);
+    // You can also log more details if needed:
+    console.error("Error details:", {
+      userId,
+      limit,
+      errorMessage: error instanceof Error ? error.message : String(error)
+    });
+    return null;
+  }
+}
