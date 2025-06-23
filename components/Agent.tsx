@@ -4,14 +4,10 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import Vapi from "@vapi-ai/web";
-
 import { cn } from "@/lib/utils";
-// import { vapi } from "@/lib/vapi.sdk";
+import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
-
-const vapi = new Vapi(process.env.NEXT_PUBLIC_VAPI_WEB_TOKEN!);
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -121,23 +117,33 @@ const Agent = ({
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
 
-    await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-      variableValues: {
-        userName: userName,
-        userid: userId,
-      },
-    });
+    if (type === "generate") {
+      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+        variableValues: {
+          username: userName,
+          userid: userId,
+        },
+      });
+    } else {
+      let formattedQuestions = "";
+      if (questions) {
+        formattedQuestions = questions
+          .map((question) => `- ${question}`)
+          .join("\n");
+      }
+
+      await vapi.start(interviewer, {
+        variableValues: {
+          questions: formattedQuestions,
+        },
+      });
+    }
   };
 
   const handleDisconnect = () => {
     setCallStatus(CallStatus.FINISHED);
     vapi.stop();
   };
-
-  const latestMessage = messages[messages.length - 1]?.content;
-
-  const isCallInactiveOrFinished =
-    callStatus === CallStatus.INACTIVE || callStatus === CallStatus.FINISHED;
 
   return (
     <>
@@ -176,13 +182,13 @@ const Agent = ({
         <div className="transcript-border">
           <div className="transcript">
             <p
-              key={latestMessage}
+              key={lastMessage}
               className={cn(
                 "transition-opacity duration-500 opacity-0",
                 "animate-fadeIn opacity-100"
               )}
             >
-              {latestMessage}
+              {lastMessage}
             </p>
           </div>
         </div>
@@ -199,7 +205,9 @@ const Agent = ({
             />
 
             <span className="relative">
-              {isCallInactiveOrFinished ? "Call" : ". . ."}
+              {callStatus === "INACTIVE" || callStatus === "FINISHED"
+                ? "Call"
+                : ". . ."}
             </span>
           </button>
         ) : (
