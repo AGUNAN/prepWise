@@ -1,8 +1,3 @@
-Here’s a professional and well-structured `README.md` file for your **AI-powered Mock Interview App** using **Next.js, Firebase, Vercel, Gemini AI, Vapi AI, and TailwindCSS**:
-
----
-
-````markdown
 # 🎙️ AI-Powered Mock Interview Platform
 
 Welcome to **PrepWise** – a fully AI-integrated mock interview platform designed to simulate realistic interview sessions for job seekers, students, and professionals.
@@ -37,16 +32,6 @@ Welcome to **PrepWise** – a fully AI-integrated mock interview platform design
 
 ---
 
-## 🚀 Getting Started
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/your-username/ai-mock-interview.git
-cd ai-mock-interview
-```
-````
-
 ### 2. Install dependencies
 
 ```bash
@@ -70,37 +55,5 @@ VAPI_WORKFLOW_ID=your-vapi-workflow-id
 
 GEMINI_API_KEY=your-google-gemini-api-key
 ```
-
----
-
-## ⚙️ Scripts
-
-| Command         | Description                              |
-| --------------- | ---------------------------------------- |
-| `npm run dev`   | Start the dev server at `localhost:3000` |
-| `npm run build` | Build the app for production             |
-| `npm run start` | Start the production server              |
-| `vercel --prod` | Deploy to Vercel                         |
-
----
-
-## 🧪 How It Works
-
-1. User logs in via Firebase.
-2. AI Assistant (powered by Gemini) starts a mock interview via voice (Vapi AI).
-3. Vapi Workflow handles voice transcriptions and user responses.
-4. Gemini analyzes the response and returns real-time feedback.
-5. User gets interview score and improvement tips at the end.
-
----
-
-## 📷 Screenshots
-
----
-
-## 🛡️ Security Notes
-
-- All API keys are stored in secure `.env` files or Vercel secrets.
-- Vapi and Gemini keys are used only server-side (never exposed to the browser).
 
 ---
