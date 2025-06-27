@@ -7,13 +7,7 @@ import { Button } from "./ui/button";
 import { cn, getRandomInterviewCover } from "@/lib/utils";
 import DisplayTechIcons from "./DisplayTechIcons";
 
-const InterviewCard = ({
-  interviewId,
-  role,
-  type,
-  techstack,
-  createdAt,
-}: InterviewCardProps) => {
+const InterviewCard = ({ role, type, techstack }: InterviewCardProps) => {
   const feedback = null as Feedback | null;
 
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
@@ -23,9 +17,7 @@ const InterviewCard = ({
       Mixed: "bg-light-600",
       Technical: "bg-light-800",
     }[normalizedType] || "bg-light-600";
-  const formattedDate = dayjs(
-    feedback?.createdAt || createdAt || Date.now()
-  ).format("MMM D, YYYY");
+  const formattedDate = dayjs(Date.now()).format("MMM D, YYYY");
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96">
       <div className="card-interview">
@@ -72,8 +64,9 @@ const InterviewCard = ({
 
           {/* Feedback or Placeholder Text */}
           <p className="line-clamp-2 mt-5">
-            {feedback?.finalAssessment ||
-              "You haven't taken this interview yet. Take it now to improve your skills."}
+            {
+              "You haven't taken this interview yet. Take it now to improve your skills."
+            }
           </p>
         </div>
 
@@ -81,15 +74,7 @@ const InterviewCard = ({
           <DisplayTechIcons techStack={techstack} />
 
           <Button className="btn-primary">
-            <Link
-              href={
-                feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
-              }
-            >
-              {feedback ? "Check Feedback" : "View Interview"}
-            </Link>
+            <Link href="/interview">{"View Interview"}</Link>
           </Button>
         </div>
       </div>

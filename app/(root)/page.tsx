@@ -5,22 +5,10 @@ import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { dummyInterviews } from "@/constants";
-// import {
-//   getInterviewsByUserId,
-//   getLatestInterviews,
-// } from "@/lib/actions/general.action";
 
 const page = async () => {
   const user = await getCurrentUser();
 
-  // // Fetch data safely using guaranteed user.id
-  // const [userInterviews, allInterview] = await Promise.all([
-  //   getInterviewsByUserId(user!.id),
-  //   getLatestInterviews({ userId: user!.id }),
-  // ]);
-
-  // const hasPastInterviews = userInterviews && userInterviews.length > 0;
-  // const hasUpcomingInterviews = allInterview && allInterview.length > 0;
   return (
     <>
       <section className="card-cta">
